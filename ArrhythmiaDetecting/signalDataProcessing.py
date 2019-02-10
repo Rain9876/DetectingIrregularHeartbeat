@@ -39,6 +39,7 @@ class SignalDataProcessing:
         self.annotation = None
         self.windowSize = windowSize
         self.linspace = linspace
+        self.writeDown = False
 
         if WFDB:
 
@@ -254,9 +255,8 @@ class SignalDataProcessing:
 
 
     ## Write all the signals into csv file
-    def writeSignalsToCSV(self,array, path):
-        pd.DataFrame(array).to_csv(path, mode="a", header=False, index=False)
-
+    def writeSignalsToCSV(self, writeDown):
+        self.writeDown = writeDown
 
     ## Processing all signals of particular type and then writing into csv file.
     def processingAllSignal(self,type):
@@ -285,10 +285,8 @@ class SignalDataProcessing:
             array = self.processingSignal(type,len(self.annotation.getQ_AtrSample()))
             path += "Q.csv"
 
-        # if array.size != 0:
-        #     self.writeSignalsToCSV(array,path)
-
-
+        if self.writeDown and array.size != 0:
+            pd.DataFrame(array).to_csv(path, mode="a", header=False, index=False)
 
 
 

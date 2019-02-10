@@ -61,7 +61,7 @@ def FeedForwardNeuralNetwork(X_train, y_train, X_test, y_test):
     history = md.fit(X_train, y_train, epochs = 100, validation_data = (X_test, y_test),shuffle=True, verbose=2)
 
 
-    md.save("./Model/FFNN_model_30_1.h5")
+    # md.save("./Model/FFNN_model_30_1.h5")
 
 
     util.plotAccuracyGraph(history)
@@ -78,7 +78,7 @@ def FeedForwardNeuralNetwork(X_train, y_train, X_test, y_test):
 
 
 
-X_train, y_train, X_test, y_test = load_train_test_data()
-
-FeedForwardNeuralNetwork(X_train, y_train, X_test, y_test)
+# X_train, y_train, X_test, y_test = load_train_test_data()
+#
+# FeedForwardNeuralNetwork(X_train, y_train, X_test, y_test)
 

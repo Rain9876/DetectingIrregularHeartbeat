@@ -3,6 +3,7 @@ from keras.models import Sequential, load_model
 from keras.layers import *
 from keras.utils import to_categorical
 import matplotlib.pyplot as plt
+import numpy as np
 from ArrhythmiaDetecting import util, balanced_sampling as bs
 
 
@@ -75,7 +76,7 @@ def LongShortTermMemoryNeuralNetwork(X_train, y_train, X_test, y_test):
     util.metricsMeasurement(y_true, y_pred)
 
 
-
-X_train, y_train, X_test, y_test = load_train_test_data()
-LongShortTermMemoryNeuralNetwork(X_train, y_train, X_test, y_test)
+#
+# X_train, y_train, X_test, y_test = load_train_test_data()
+# LongShortTermMemoryNeuralNetwork(X_train, y_train, X_test, y_test)
 

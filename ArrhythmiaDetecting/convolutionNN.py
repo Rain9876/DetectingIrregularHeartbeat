@@ -4,6 +4,7 @@ from keras.models import Sequential, load_model
 from keras.layers import *
 from keras.utils import to_categorical
 import matplotlib.pyplot as plt
+import numpy as np
 from ArrhythmiaDetecting import util, balanced_sampling as bs
 
 
@@ -73,12 +74,5 @@ def ConvolutionNeuralNetwork(X_train, y_train, X_test, y_test):
 
 
 
-X_train, y_train, X_test, y_test = load_train_test_data()
-
-ConvolutionNeuralNetwork(X_train, y_train, X_test, y_test)
-
-
-
-# model = load_model("FFNN_model.h5")
-# score = model.evaluate(X_test,y_test, verbose=0)
-# print(score)
+# X_train, y_train, X_test, y_test = load_train_test_data()
+# ConvolutionNeuralNetwork(X_train, y_train, X_test, y_test)
