@@ -7,15 +7,15 @@ from ArrhythmiaDetecting import util, balanced_sampling as bs,signalDataProcessi
 
 def main():
 
-    print("-----------------------------------------------------")
-
+    # print("-----------------------------------------------------")
+    #
     # patientNumber = util.getPatientsNumber()
     #
-    # for i in patientNumber[:24]:
+    # for i in patientNumber[:40]:
     #
     #     signal = sdp.SignalDataProcessing(i,"MLII",300,60, True)
     #
-    #     # signal.writeSignalsToCSV(False)
+    #     signal.writeSignalsToCSV(True)
     #
     #     signal.processingAllSignal("N")
     #     signal.processingAllSignal("VEB")
@@ -24,9 +24,9 @@ def main():
     #     signal.processingAllSignal("Q")
 
 
-    imLearn = bs.balanced_Sampling()
+    imLearn = bs.balanced_Sampling(60)
 
-    X_signal, Y_label = imLearn.featureExtract(60)
+    X_signal, Y_label = imLearn.featureExtract()
 
     X_data, Y_data = imLearn.balanceSamples(X_signal, Y_label)
 
@@ -37,14 +37,14 @@ def main():
     y_train = to_categorical(y_train)
     y_test = to_categorical(y_test)
 
-    print("Feed Forward Neural Network:")
-    FFNN.FeedForwardNeuralNetwork(X_train, y_train, X_test, y_test)
+    # print("Feed Forward Neural Network:")
+    # FFNN.FeedForwardNeuralNetwork(X_train, y_train, X_test, y_test)
 
-    # X_train = np.expand_dims(X_train, axis=2)
-    # X_test = np.expand_dims(X_test, axis=2)
-    #
-    # print("Convolution Neural Network:")
-    # CNN.ConvolutionNeuralNetwork(X_train, y_train, X_test, y_test)
+    X_train = np.expand_dims(X_train, axis=2)
+    X_test = np.expand_dims(X_test, axis=2)
+
+    print("Convolution Neural Network:")
+    CNN.ConvolutionNeuralNetwork(X_train, y_train, X_test, y_test)
     #
     #
     # print("Long Short Term Memory Neural Network:")

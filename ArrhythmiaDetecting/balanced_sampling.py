@@ -1,6 +1,6 @@
 from imblearn.keras import BalancedBatchGenerator
 from imblearn.combine import SMOTEENN
-from imblearn.under_sampling import NearMiss, EditedNearestNeighbours
+from imblearn.under_sampling import NearMiss, EditedNearestNeighbours,TomekLinks
 from imblearn.over_sampling import SMOTE
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler,LabelEncoder
@@ -10,64 +10,109 @@ import keras
 import pandas as pd
 import numpy as np
 import ArrhythmiaDetecting.util as util
+import matplotlib.pyplot as plt
+
 
 
 class balanced_Sampling:
 
-    def __init__(self):
+    def __init__(self,sampleShape):
 
         self.path = "../Dataset/ProcessedSignal/"
+        self.sampleShape = sampleShape
 
+    def featureExtract(self):
 
-    def featureExtract(self, sampleShape):
-
-        pdHeader = list(range(sampleShape))
+        pdHeader = list(range(self.sampleShape))
 
         typeNameList = util.getTypeNameList()
 
         Y_data = np.array([])
-        X_data = np.empty([0, sampleShape])
-
+        # X_data = np.empty([0, self.sampleShape])
+        X_samplingList = []
+        Y_samplingList = []
 
         for i in range(len(typeNameList)):
 
             signalContent = pd.read_csv(self.path + typeNameList[i]+".csv",header=pdHeader).values
 
-            X_data = np.append(X_data,signalContent,axis=0)
+            X_samplingList.append(signalContent)
+
+            # X_data = np.append(X_data,signalContent,axis=0)
             y_temp = np.ones(len(signalContent)) * i
             Y_data = np.append(Y_data, y_temp)
+            Y_samplingList.append(y_temp)
 
 
-        print(X_data.shape)
-        print(Y_data.shape)
-
-        return (X_data, Y_data)
-
-
-    def balanceSamples(self,X_input,Y_input):
-
-        # X_input = X_input[20000:]
-        # Y_input = Y_input[20000:]
-
-        strategy = 'auto'
-
-        X_data, Y_data = shuffle(X_input,Y_input,random_state = 2)
+        # print(X_data.shape)
+        # print(Y_data.shape)
 
         print('Original dataset shape %s' % Counter(Y_data))
 
-        sme = SMOTEENN(sampling_strategy = strategy, random_state = 42)
-        X_data, Y_data = sme.fit_resample(X_data, Y_data)
-
-        # smote = SMOTE(sampling_strategy="auto",random_state = 42)
-        # X_data, Y_data = smote.fit_resample(X_data,Y_data)
-        #
-        # print('Resampled 1st dataset shape %s' % Counter(Y_data))
-        #
-        # enn = EditedNearestNeighbours(sampling_strategy= "auto", random_state=42)
-        # X_data, Y_data = enn.fit_resample(X_data,Y_data)
+        # return (X_data, Y_data)
+        return  X_samplingList, Y_samplingList
 
 
-        print('Resampled dataset shape %s' % Counter(Y_data))
+
+    def balanceSamples(self,X_sampling, Y_sampling, limit = 0):
+
+        X_data = np.empty([0, self.sampleShape])
+        Y_data = np.array([])
+
+        if limit == 0:
+
+            for i in range(5):
+                X_data = np.append(X_data,X_sampling[i],axis=0)
+                Y_data = np.append(Y_data,Y_sampling[i],axis=0)
+
+            sme = SMOTEENN(sampling_strategy = "auto", random_state = 42)
+
+            X_data, Y_data = sme.fit_resample(X_data, Y_data)
+
+            print('Resampled dataset shape %s' % Counter(Y_data))
+
+        else:
+
+            X_underSampling = np.empty([0, self.sampleShape])
+            Y_underSampling = np.array([])
+            X_overSampling = np.empty([0, self.sampleShape])
+            Y_overSampling = np.array([])
+
+            strategy = {}
+            sub_strategy = {}
+
+            for i in range(5):
+
+                strategy[i] = limit
+                if len(X_sampling[i]) > limit:
+                    X_underSampling = np.append(X_underSampling,X_sampling[i],axis=0)
+                    Y_underSampling = np.append(Y_underSampling,Y_sampling[i],axis=0)
+
+                else:
+
+                    X_overSampling = np.append(X_overSampling, X_sampling[i], axis=0)
+                    Y_overSampling = np.append(Y_overSampling, Y_sampling[i], axis=0)
+                    sub_strategy[i] = limit
+
+
+            smote = SMOTE(sampling_strategy= sub_strategy,random_state = 42)
+            X_overSampling, Y_overSampling = smote.fit_resample(X_overSampling,Y_overSampling)
+
+
+            X_data =  np.append(X_underSampling,X_overSampling,axis=0)
+            Y_data =  np.append(Y_underSampling,Y_overSampling,axis=0)
+
+            print('1st Resampled dataset shape %s' % Counter(Y_data))
+
+            enn = NearMiss(sampling_strategy= strategy, random_state=42)
+            X_data, Y_data = enn.fit_resample(X_data,Y_data)
+
+
+            print('2nd Resampled dataset shape %s' % Counter(Y_data))
+
+
+        X_data, Y_data = shuffle(X_data,Y_data,random_state = 2)
+
 
         return X_data, Y_data
 
@@ -113,13 +158,22 @@ class balanced_Sampling:
 
 ###---Testing----------------------------------------------------###
 
-# imLearn = balanced_Sampling()
+# imLearn = balanced_Sampling(60)
 #
-# X_signal, Y_label = imLearn.featureExtract(60)
+# X_signal, Y_label = imLearn.featureExtract()
 #
-# X_data, Y_data = imLearn.balanceSamples(X_signal, Y_label)
+# X_data, Y_data = imLearn.balanceSamples(X_signal, Y_label, 6000)
 #
 # X_train,X_test,y_train,y_test = imLearn.train_test_data(X_data,Y_data)
+
+# t = np.arange(60)
+# for i in range(10):
+#     print(y_train[i])
+#     plt.plot(t, X_train[i], marker='.')
+#     plt.xlabel("elapsed time")
+#     plt.ylabel("signal mv")
+#     plt.show()
+#
 #
 # imLearn.write_TrainingTesting_toCSV(X_train,X_test,y_train,y_test)
 

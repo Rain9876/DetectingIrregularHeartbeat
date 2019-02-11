@@ -59,7 +59,7 @@ def LongShortTermMemoryNeuralNetwork(X_train, y_train, X_test, y_test):
     LSTM_model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
     LSTM_model.summary()
 
-    result = LSTM_model.fit(X_train, y_train, batch_size= 32, epochs=10, verbose=1, validation_data=(X_test, y_test))
+    result = LSTM_model.fit(X_train, y_train, batch_size= 32, epochs=30, verbose=1, validation_data=(X_test, y_test))
 
 
     # LSTM_model.save("./Model/LSTM_model_1.h5")

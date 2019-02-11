@@ -37,7 +37,7 @@ def FeedForwardNeuralNetwork(X_train, y_train, X_test, y_test):
 
     md = Sequential()
     md.add(Dense(120, input_shape = (60,), activation = 'relu'))
-    md.add(Dense(120, activation = 'tanh'))
+    md.add(Dense(80, activation = 'tanh'))
     md.add(Dropout(0.50))
     md.add(Dense(60, activation = 'tanh'))
     md.add(Dense(5, activation = 'softmax'))
