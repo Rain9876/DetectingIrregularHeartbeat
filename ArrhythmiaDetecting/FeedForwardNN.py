@@ -36,10 +36,15 @@ def load_train_test_data():
 def FeedForwardNeuralNetwork(X_train, y_train, X_test, y_test):
 
     md = Sequential()
-    md.add(Dense(120, input_shape = (60,), activation = 'relu'))
-    md.add(Dense(80, activation = 'tanh'))
+
+    md.add(Dense(60, input_shape = (60,), activation = 'relu'))
+
+    md.add(Dense(40, activation = 'tanh'))
+
     md.add(Dropout(0.50))
-    md.add(Dense(60, activation = 'tanh'))
+
+    md.add(Dense(30, activation = 'tanh'))
+
     md.add(Dense(5, activation = 'softmax'))
 
     # opt = SGD(lr=0.01, momentum=0.0, decay=0.0, nesterov=False)
@@ -58,7 +63,7 @@ def FeedForwardNeuralNetwork(X_train, y_train, X_test, y_test):
     # training_generator = BalancedBatchGenerator(X_train, y_train, batch_size=32, random_state=42)
     # callback_history = md.fit_generator(generator=training_generator, steps_per_epoch=100, epochs=100, verbose=0)
 
-    history = md.fit(X_train, y_train, epochs = 100, validation_data = (X_test, y_test),shuffle=True, verbose=2)
+    history = md.fit(X_train, y_train, epochs = 200, validation_data = (X_test, y_test),shuffle=True, verbose=2)
 
 
     # md.save("./Model/FFNN_model_30_1.h5")

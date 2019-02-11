@@ -28,7 +28,7 @@ def main():
 
     X_signal, Y_label = imLearn.featureExtract()
 
-    X_data, Y_data = imLearn.balanceSamples(X_signal, Y_label)
+    X_data, Y_data = imLearn.balanceSamples(X_signal, Y_label,20000)
 
     X_train,X_test,y_train,y_test = imLearn.train_test_data(X_data,Y_data)
 
@@ -43,12 +43,15 @@ def main():
     X_train = np.expand_dims(X_train, axis=2)
     X_test = np.expand_dims(X_test, axis=2)
 
-    print("Convolution Neural Network:")
-    CNN.ConvolutionNeuralNetwork(X_train, y_train, X_test, y_test)
+    # print("Convolution Neural Network:")
+    # CNN.ConvolutionNeuralNetwork(X_train, y_train, X_test, y_test)
     #
     #
-    # print("Long Short Term Memory Neural Network:")
-    # LSTM.LongShortTermMemoryNeuralNetwork(X_train, y_train, X_test, y_test)
+    print(X_train.shape)
+    print(y_train.shape)
+
+    print("Long Short Term Memory Neural Network:")
+    LSTM.LongShortTermMemoryNeuralNetwork(X_train, y_train, X_test, y_test)
 
 
 if __name__ == '__main__':

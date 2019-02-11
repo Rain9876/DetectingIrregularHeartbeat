@@ -37,17 +37,19 @@ def ConvolutionNeuralNetwork(X_train, y_train, X_test, y_test):
 
     cnn = Sequential()
 
-    cnn.add(Conv1D(38, 10, input_shape=(60,1), padding="same", activation="relu"))
-
-    cnn.add(Conv1D(64, 10, padding='same', activation='relu'))
+    cnn.add(Conv1D(30, 5, input_shape=(60,1), padding="same", activation="relu"))
 
     cnn.add(MaxPooling1D())
 
-    cnn.add(Conv1D(64, 10, padding='same', activation='relu'))
+    cnn.add(Conv1D(60, 5, padding='same', activation='relu'))
+
+    cnn.add(MaxPooling1D())
 
     cnn.add(Flatten())
 
-    cnn.add(Dropout(0.25))
+    cnn.add(Dropout(0.5))
+
+    cnn.add(Dense(720, activation='relu'))
 
     cnn.add(Dense(5, activation='softmax'))
 
@@ -57,7 +59,7 @@ def ConvolutionNeuralNetwork(X_train, y_train, X_test, y_test):
 
     # reduce_lr = ReduceLROnPlateau(monitor='val_acc', factor=0.2, patience=3, min_lr=0.0001)
 
-    result = cnn.fit(X_train, y_train, epochs= 50, batch_size=16, verbose=1, validation_data=(X_test, y_test))
+    result = cnn.fit(X_train, y_train, epochs= 100, batch_size=16, verbose=1, validation_data=(X_test, y_test))
 
     # cnn.save("./Model/CNN_model_1.h5")
 

@@ -45,21 +45,28 @@ def LongShortTermMemoryNeuralNetwork(X_train, y_train, X_test, y_test):
     # LSTM_model.fit(X_train, y_train, batch_size=16, epochs=10)
 
     LSTM_model = Sequential()
-    LSTM_model.add(LSTM(120, input_shape=(60, 1), return_sequences=True))
-    # LSTM_model.add(TimeDistributed(Dense(60, activation='tanh')))
-    LSTM_model.add(LSTM(64, return_sequences=True))
+
+    LSTM_model.add(LSTM(120, input_shape=(60, 1), activation= 'relu',return_sequences=True))
+
+    LSTM_model.add(Dropout(0.20))
+
+    LSTM_model.add(TimeDistributed(Dense(64, activation='tanh')))
+
+    LSTM_model.add(LSTM(40, return_sequences=True))
     # LSTM_model.add(TimeDistributed(Dense(20, activation='tanh')))
     # LSTM_model.add(LSTM(10, return_sequences=True))
     # LSTM_model.add(TimeDistributed(Dense(20, activation='tanh')))
     LSTM_model.add(Flatten())
+
     LSTM_model.add(Dense(20, activation='relu'))
     LSTM_model.add(Dropout(0.20))
+
     LSTM_model.add(Dense(5, activation='softmax'))
 
     LSTM_model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
     LSTM_model.summary()
 
-    result = LSTM_model.fit(X_train, y_train, batch_size= 32, epochs=30, verbose=1, validation_data=(X_test, y_test))
+    result = LSTM_model.fit(X_train, y_train, batch_size= 32, epochs=10, verbose=1, validation_data=(X_test, y_test))
 
 
     # LSTM_model.save("./Model/LSTM_model_1.h5")
