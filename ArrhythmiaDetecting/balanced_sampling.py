@@ -67,9 +67,9 @@ class balanced_Sampling:
 
             sme = SMOTEENN(sampling_strategy = "auto", random_state = 42)
 
-            X_data, Y_data = sme.fit_resample(X_data, Y_data)
-
             print('Resampled dataset shape %s' % Counter(Y_data))
+
+            X_data, Y_data = sme.fit_resample(X_data, Y_data)
 
         else:
 
@@ -168,13 +168,13 @@ class balanced_Sampling:
 
 # t = np.arange(60)
 # for i in range(10):
-#     print(y_train[i])
-#     plt.plot(t, X_train[i], marker='.')
+#     print(Y_data[i])
+#     plt.plot(t, X_data[i], marker='.')
 #     plt.xlabel("elapsed time")
 #     plt.ylabel("signal mv")
 #     plt.show()
-#
-#
+
+
 # imLearn.write_TrainingTesting_toCSV(X_train,X_test,y_train,y_test)
 
 
