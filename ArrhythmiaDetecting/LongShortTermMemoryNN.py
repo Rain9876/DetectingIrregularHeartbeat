@@ -1,3 +1,12 @@
+#
+## Author: Yurun SONG
+## Date: 2019/01/30
+## Project: Deep Learning about detecting irregular heartbeat
+#
+# Construct the LSTM Neural Network model
+# Training, testing and evaluation
+#
+
 import pandas as pd
 from keras.models import Sequential, load_model
 from keras.layers import *
@@ -7,9 +16,10 @@ import numpy as np
 from ArrhythmiaDetecting import util, balanced_sampling as bs
 
 
+## Load training and testing data
 def load_train_test_data():
 
-    imbLearn = bs.balanced_Sampling()
+    imbLearn = bs.balanced_Sampling(60)
 
     X_train, y_train, X_test, y_test = imbLearn.read_TrainingTesting_data()
 
@@ -17,12 +27,9 @@ def load_train_test_data():
 
     y_test = to_categorical(y_test)
 
-    # print(y_test)
-
     X_train = np.expand_dims(X_train, axis=2)
 
     X_test = np.expand_dims(X_test, axis=2)
-
 
     print(X_train.shape)
     print(y_train.shape)
@@ -32,17 +39,8 @@ def load_train_test_data():
     return X_train, y_train, X_test, y_test
 
 
+## Construct the Long short Term Memory Neural Network Model
 def LongShortTermMemoryNeuralNetwork(X_train, y_train, X_test, y_test):
-
-    # LSTM_model = Sequential()
-    # LSTM_model.add(Embedding(max_features, output_dim=256))
-    # LSTM_model.add(LSTM(128))
-    # LSTM_model.add(Dropout(0.5))
-    # LSTM_model.add(Dense(1, activation='sigmoid'))
-    #
-    # LSTM_model.compile(loss='binary_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
-    #
-    # LSTM_model.fit(X_train, y_train, batch_size=16, epochs=10)
 
     LSTM_model = Sequential()
 
@@ -64,8 +62,7 @@ def LongShortTermMemoryNeuralNetwork(X_train, y_train, X_test, y_test):
 
     LSTM_model.summary()
 
-    result = LSTM_model.fit(X_train, y_train, batch_size= 32, epochs=30, verbose=1, validation_data=(X_test, y_test))
-
+    result = LSTM_model.fit(X_train, y_train, batch_size= 32, epochs=50, verbose=1, validation_data=(X_test, y_test))
 
     # LSTM_model.save("./Model/LSTM_model_1.h5")
 
@@ -75,13 +72,10 @@ def LongShortTermMemoryNeuralNetwork(X_train, y_train, X_test, y_test):
 
     y_true, y_pred = util.get_prediction_Truth_value(prediction, y_test)
 
-    # print (y_true)
-    # print (y_pred)
-
     util.metricsMeasurement(y_true, y_pred)
 
 
-#
+
 # X_train, y_train, X_test, y_test = load_train_test_data()
 # LongShortTermMemoryNeuralNetwork(X_train, y_train, X_test, y_test)
 

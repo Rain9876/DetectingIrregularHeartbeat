@@ -1,3 +1,15 @@
+#
+## Author: Yurun SONG
+## Date: 2019/01/15
+## Project: Deep Learning about detecting irregular heartbeat
+#
+# balance_Sampling is a class processing the extracted signal samples.
+# Due to the imbalance of five type of samples, the oversampling and undersampling methods should be implemented
+# in order to strengthen the learning ability of models and improve the accuracy.
+# Feature extraction and split the training and testing data are all illustrated in this class.
+#
+
+
 from imblearn.keras import BalancedBatchGenerator
 from imblearn.combine import SMOTEENN
 from imblearn.under_sampling import NearMiss, EditedNearestNeighbours,TomekLinks
@@ -16,19 +28,23 @@ import matplotlib.pyplot as plt
 
 class balanced_Sampling:
 
+
     def __init__(self,sampleShape):
 
         self.path = "../Dataset/ProcessedSignal/"
         self.sampleShape = sampleShape
 
+
+    ## Read the processed signal sample file and assocaite with their features
+    ## Return two lists storing the samples and features individually.
     def featureExtract(self):
 
         pdHeader = list(range(self.sampleShape))
 
         typeNameList = util.getTypeNameList()
 
-        Y_data = np.array([])
         # X_data = np.empty([0, self.sampleShape])
+        Y_data = np.array([])
         X_samplingList = []
         Y_samplingList = []
 
@@ -44,32 +60,31 @@ class balanced_Sampling:
             Y_samplingList.append(y_temp)
 
 
-        # print(X_data.shape)
-        # print(Y_data.shape)
-
         print('Original dataset shape %s' % Counter(Y_data))
 
-        # return (X_data, Y_data)
         return  X_samplingList, Y_samplingList
 
 
-
-    def balanceSamples(self,X_sampling, Y_sampling, limit = 0):
+    ## Handling the balance-sampling
+    ## Take two lists from the featureExtract and give the standand samples amount you want to achieve
+    ## If nothing is provided, then oversampling (SMOTEENN) all the samples to Maximun
+    ## Otherwise, oversamples (NearMiss) the minority class first, then undersamples (SMOTE) to the standard amount
+    ## Shuffle the samples and feature at last
+    ## Suggested amount: 3000 ~ 70000
+    def balanceSamples(self,X_sampling, Y_sampling, amount = 0):
 
         X_data = np.empty([0, self.sampleShape])
         Y_data = np.array([])
 
-        if limit == 0:
+        if amount == 0:
 
             for i in range(5):
                 X_data = np.append(X_data,X_sampling[i],axis=0)
                 Y_data = np.append(Y_data,Y_sampling[i],axis=0)
 
             sme = SMOTEENN(sampling_strategy = "auto", random_state = 42)
-
-            print('Resampled dataset shape %s' % Counter(Y_data))
-
             X_data, Y_data = sme.fit_resample(X_data, Y_data)
+            print('Resampled dataset shape %s' % Counter(Y_data))
 
         else:
 
@@ -82,9 +97,10 @@ class balanced_Sampling:
             sub_strategy = {}
 
             for i in range(5):
+                strategy[i] = amount
 
-                strategy[i] = limit
-                if len(X_sampling[i]) > limit:
+                if len(X_sampling[i]) > amount:
+
                     X_underSampling = np.append(X_underSampling,X_sampling[i],axis=0)
                     Y_underSampling = np.append(Y_underSampling,Y_sampling[i],axis=0)
 
@@ -92,31 +108,27 @@ class balanced_Sampling:
 
                     X_overSampling = np.append(X_overSampling, X_sampling[i], axis=0)
                     Y_overSampling = np.append(Y_overSampling, Y_sampling[i], axis=0)
-                    sub_strategy[i] = limit
+                    sub_strategy[i] = amount
 
 
             smote = SMOTE(sampling_strategy= sub_strategy,random_state = 42)
             X_overSampling, Y_overSampling = smote.fit_resample(X_overSampling,Y_overSampling)
 
-
             X_data =  np.append(X_underSampling,X_overSampling,axis=0)
             Y_data =  np.append(Y_underSampling,Y_overSampling,axis=0)
-
             print('1st Resampled dataset shape %s' % Counter(Y_data))
 
             enn = NearMiss(sampling_strategy= strategy, random_state=42)
             X_data, Y_data = enn.fit_resample(X_data,Y_data)
-
-
             print('2nd Resampled dataset shape %s' % Counter(Y_data))
 
 
         X_data, Y_data = shuffle(X_data,Y_data,random_state = 2)
 
-
         return X_data, Y_data
 
-
+    ## Split the samples into Training and Testing sets
+    ## Scaler the these value between 0 and 1
     def train_test_data(self,X_data,Y_data):
         X_train,X_test,y_train,y_test = train_test_split(X_data,Y_data,random_state=2)
 
@@ -134,7 +146,7 @@ class balanced_Sampling:
 
         return X_train,X_test,y_train,y_test
 
-
+    ## Write the Training and Testing data into csv file
     def write_TrainingTesting_toCSV(self, X_train, X_test, y_train, y_test):
         pd.DataFrame(X_train).to_csv(self.path+"training_signals.csv",mode="w",index=False)
         pd.DataFrame(y_train).to_csv(self.path+"training_labels.csv",mode="w", index= False)
@@ -142,7 +154,7 @@ class balanced_Sampling:
         pd.DataFrame(y_test).to_csv(self.path+"testing_labels.csv",mode="w", index=False)
 
 
-
+    ## Read the Training and Testing data from csv file
     def read_TrainingTesting_data(self):
         X_train = pd.read_csv(self.path + "training_signals.csv", dtype=np.float).values
         X_test = pd.read_csv(self.path + "testing_signals.csv", dtype=np.float).values

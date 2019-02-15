@@ -1,3 +1,11 @@
+## Author: Yurun SONG
+## Date: 2019/01/30
+## Project: Deep Learning about detecting irregular heartbeat
+#
+# Construct the CNN Neural Network model
+# Training, testing and evaluation
+#
+
 import pandas as pd
 from keras.layers import Convolution1D
 from keras.models import Sequential, load_model
@@ -8,9 +16,10 @@ import numpy as np
 from ArrhythmiaDetecting import util, balanced_sampling as bs
 
 
+## Load training and testing data
 def load_train_test_data():
 
-    imbLearn = bs.balanced_Sampling()
+    imbLearn = bs.balanced_Sampling(60)
 
     X_train, y_train, X_test, y_test = imbLearn.read_TrainingTesting_data()
 
@@ -23,8 +32,6 @@ def load_train_test_data():
     print(X_test.shape)
     print(y_test.shape)
 
-    # print(y_test)
-
     X_train = np.expand_dims(X_train, axis=2)
 
     X_test = np.expand_dims(X_test, axis=2)
@@ -32,7 +39,7 @@ def load_train_test_data():
     return X_train, y_train, X_test, y_test
 
 
-
+## Construct the Convolution Neural Network Model
 def ConvolutionNeuralNetwork(X_train, y_train, X_test, y_test):
 
     cnn = Sequential()
@@ -68,9 +75,6 @@ def ConvolutionNeuralNetwork(X_train, y_train, X_test, y_test):
     prediction = cnn.predict(X_test)
 
     y_true,y_pred = util.get_prediction_Truth_value(prediction, y_test)
-
-    # print (y_true)
-    # print (y_pred)
 
     util.metricsMeasurement(y_true,y_pred)
 

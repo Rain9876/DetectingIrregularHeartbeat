@@ -6,7 +6,7 @@ from ArrhythmiaDetecting import util, balanced_sampling as bs
 
 def load_train_test_data():
 
-    imbLearn = bs.balanced_Sampling()
+    imbLearn = bs.balanced_Sampling(60)
 
     X_train, y_train, X_test, y_test = imbLearn.read_TrainingTesting_data()
 

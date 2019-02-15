@@ -32,6 +32,7 @@ class SignalDataProcessing:
     ## leadType is "MLII", which is most common one in MIT-BIH.
     ## windowsize is the slice window size where we extract signal points around the R peak.
     ## linspace is the number of signal points we are about to input into classifiers.
+
     def __init__(self, patientNumber, leadType, windowSize, linspace, WFDB = True):
         self.patientNumber = patientNumber
         self.leadType = leadType
@@ -301,7 +302,7 @@ class SignalDataProcessing:
 
 
 ### Test Part 1: process all patient in PatientsNumber txt file
-#
+
 # for i in patientNumber[:15]:
 #
 #     signal = SignalDataProcessing(i,"MLII",300,60)

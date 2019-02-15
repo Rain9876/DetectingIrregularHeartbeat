@@ -1,10 +1,15 @@
+## Author: Yurun SONG
+## Date: 2019/01/30
+## Project: Deep Learning about detecting irregular heartbeat
+#
+
 import numpy as np
 from keras.utils import to_categorical
 from ArrhythmiaDetecting import util, balanced_sampling as bs,signalDataProcessing as sdp, \
     FeedForwardNN as FFNN, convolutionNN as CNN, LongShortTermMemoryNN as LSTM
 
 
-
+## A series of tests starting from extracting data from the MIT-BIH to the models training
 def main():
 
     # print("-----------------------------------------------------")
@@ -13,9 +18,9 @@ def main():
     #
     # for i in patientNumber[:40]:
     #
-    #     signal = sdp.SignalDataProcessing(i,"MLII",300,60, True)
+    #     signal = sdp.SignalDataProcessing(i,"MLII",300,60, False)
     #
-    #     signal.writeSignalsToCSV(True)
+    #     signal.writeSignalsToCSV(False)
     #
     #     signal.processingAllSignal("N")
     #     signal.processingAllSignal("VEB")
@@ -32,7 +37,7 @@ def main():
 
     X_train,X_test,y_train,y_test = imLearn.train_test_data(X_data,Y_data)
 
-    # imLearn.write_TrainingTesting_toCSV(X_train,X_test,y_train,y_test)
+    ## imLearn.write_TrainingTesting_toCSV(X_train,X_test,y_train,y_test)
 
     y_train = to_categorical(y_train)
     y_test = to_categorical(y_test)
@@ -46,9 +51,6 @@ def main():
     # print("Convolution Neural Network:")
     # CNN.ConvolutionNeuralNetwork(X_train, y_train, X_test, y_test)
     #
-    #
-    # print(X_train.shape)
-    # print(y_train.shape)
     #
     # print("Long Short Term Memory Neural Network:")
     # LSTM.LongShortTermMemoryNeuralNetwork(X_train, y_train, X_test, y_test)
