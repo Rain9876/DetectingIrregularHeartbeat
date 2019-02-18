@@ -5,7 +5,7 @@
 
 import numpy as np
 from keras.utils import to_categorical
-from ArrhythmiaDetecting import util, balanced_sampling as bs,signalDataProcessing as sdp, \
+import util, balanced_sampling as bs,signalDataProcessing as sdp, \
     FeedForwardNN as FFNN, convolutionNN as CNN, LongShortTermMemoryNN as LSTM
 
 

@@ -3,7 +3,7 @@ import pywt.data
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-from ArrhythmiaDetecting import annotationDataProcessing as adp,signalDataProcessing as sdp, balanced_sampling as bs, util
+import annotationDataProcessing as adp,signalDataProcessing as sdp, balanced_sampling as bs, util
 
 
 

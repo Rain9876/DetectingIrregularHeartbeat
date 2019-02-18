@@ -13,7 +13,7 @@ from keras.layers import *
 from keras.utils import to_categorical
 import matplotlib.pyplot as plt
 import numpy as np
-from ArrhythmiaDetecting import util, balanced_sampling as bs
+import util, balanced_sampling as bs
 
 
 ## Load training and testing data

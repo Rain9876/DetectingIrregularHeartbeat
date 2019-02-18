@@ -1,7 +1,7 @@
 from keras.models import load_model
 from keras.utils import to_categorical
 from keras.layers import *
-from ArrhythmiaDetecting import util, balanced_sampling as bs
+import util, balanced_sampling as bs
 
 
 def load_train_test_data():

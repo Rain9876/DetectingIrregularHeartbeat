@@ -21,7 +21,7 @@ from collections import Counter
 import keras
 import pandas as pd
 import numpy as np
-import ArrhythmiaDetecting.util as util
+import util
 import matplotlib.pyplot as plt
 
 
@@ -121,7 +121,6 @@ class balanced_Sampling:
             enn = NearMiss(sampling_strategy= strategy, random_state=42)
             X_data, Y_data = enn.fit_resample(X_data,Y_data)
             print('2nd Resampled dataset shape %s' % Counter(Y_data))
-
 
         X_data, Y_data = shuffle(X_data,Y_data,random_state = 2)
 

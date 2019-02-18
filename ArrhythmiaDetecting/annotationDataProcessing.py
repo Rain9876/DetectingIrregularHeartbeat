@@ -17,7 +17,7 @@
 # so that we can pre-process the signal data with relevant signal type later.
 #
 
-import ArrhythmiaDetecting.util as util
+import util
 
 class AnnotationProcessing:
 

@@ -14,7 +14,7 @@ from keras.utils import to_categorical
 from keras.optimizers import SGD,adamax
 from keras.callbacks import ReduceLROnPlateau
 import matplotlib.pyplot as plt
-from ArrhythmiaDetecting import util, balanced_sampling as bs
+import util, balanced_sampling as bs
 from imblearn.keras import BalancedBatchGenerator
 from imblearn.combine import SMOTEENN
 from collections import Counter
