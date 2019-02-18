@@ -64,7 +64,7 @@ def LongShortTermMemoryNeuralNetwork(X_train, y_train, X_test, y_test):
 
     result = LSTM_model.fit(X_train, y_train, batch_size= 32, epochs=50, verbose=1, validation_data=(X_test, y_test))
 
-    LSTM_model.save("./Model/LSTM_model_4.h5")
+    # LSTM_model.save("./Model/LSTM_model_3.h5")
 
     util.plotAccuracyGraph(result)
 

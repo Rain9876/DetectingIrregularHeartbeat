@@ -47,11 +47,11 @@ def main():
     #
     # X_train = np.expand_dims(X_train, axis=2)
     # X_test = np.expand_dims(X_test, axis=2)
-    #
+
     # print("Convolution Neural Network:")
     # CNN.ConvolutionNeuralNetwork(X_train, y_train, X_test, y_test)
-    #
-    #
+
+
     # print("Long Short Term Memory Neural Network:")
     # LSTM.LongShortTermMemoryNeuralNetwork(X_train, y_train, X_test, y_test)
 
