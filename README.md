@@ -1,8 +1,10 @@
-# Deep Learning for Detecing Irregular Heartbeat
+# Deep Learning for Detecting Irregular Heartbeat
 
 
 ## Introduction
-  ...
+    
+    Processing the signal data extracted from MIT-BIH Arrhythmia Database
+    Create Neural Network models to classify the ECG signal into five categories.
 
 ## Processing signal
 
@@ -39,16 +41,19 @@
 
 5. Appling Discrete Wavelet Transform (DWT) to decomping the sigal file
   + Adjust basline draft
-   ![baseLine](./DWT/BaseLineDraft.png)
+    
+    ![baseLine](./DWT/BaseLineDraft.png)
 
   + Remove the High frequency noise
-   ![DWT](./DWT/DWT.png)
+    
+    ![DWT](./DWT/DWT.png)
 
 
 
 6. Interpolate the sigal diagram and transform from 300 signal points to 60 signal points
 
    ![processedSignal](processedSingleBeat.png)
+   
    Split the signals to two section, left R peak and Right of R peak.
    Process each section in  order to keep the R peak in the 60 data point.
 
@@ -57,6 +62,8 @@
 ## Sampling
   + Feature extraction
   + Undersampling and oversamping
+  
+    ie. 
     - Orignal Five types samples: {Normal: 77866, VEB: 5321, Q: 3822, SVEB: 2925, F: 737}
 
     - Resampled Five types samples: {Normal: 20000, VEB: 20000, Q: 20000, SVEB: 20000, F: 20000}
@@ -67,17 +74,17 @@
 
 ## Model
   Feed Forward Neural Network (Multi-layer Neural Network)
-
-  ![FFNN](FFNN_Model.png)
+    
+   ![FFNN](FFNN_Model.png)
 
 
   Covolutional Neural Network
 
-  ![CNN](CNN_Model.png)
+   ![CNN](CNN_Model.png)
 
 
   Long Short Term Memory Neural Network
-  (...)
+
 
 ## Evaluation
 + FFNN: 200 epoches
