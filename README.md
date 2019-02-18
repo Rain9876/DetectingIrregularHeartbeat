@@ -2,9 +2,8 @@
 
 
 ## Introduction
-    
-    Processing the signal data extracted from MIT-BIH Arrhythmia Database
-    Create Neural Network models to classify the ECG signal into five categories.
+   + Processing the signal data extracted from MIT-BIH Arrhythmia Database. 
+   + Create Neural Network models to classify the ECG signal into five categories.
 
 ## Processing signal
 
@@ -64,9 +63,8 @@
   + Undersampling and oversamping
   
     ie. 
-    - Orignal Five types samples: {Normal: 77866, VEB: 5321, Q: 3822, SVEB: 2925, F: 737}
-
-    - Resampled Five types samples: {Normal: 20000, VEB: 20000, Q: 20000, SVEB: 20000, F: 20000}
+    + Orignal Five types samples: {Normal: 77866, VEB: 5321, Q: 3822, SVEB: 2925, F: 737}
+    + Resampled Five types samples: {Normal: 20000, VEB: 20000, Q: 20000, SVEB: 20000, F: 20000}
 
   + Split Training and Testing data
     Split 100000 samples into training and testing set. 75000 samples to training and 25000 samples to testing
