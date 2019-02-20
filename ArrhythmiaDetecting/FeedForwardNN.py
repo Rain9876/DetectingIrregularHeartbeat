@@ -54,21 +54,12 @@ def FeedForwardNeuralNetwork(X_train, y_train, X_test, y_test):
 
     md.add(Dense(5, activation = 'softmax'))
 
-    # opt = SGD(lr=0.01, momentum=0.0, decay=0.0, nesterov=False)
-
-    # amax = adamax(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0)
-
     md.compile(loss = 'categorical_crossentropy', optimizer = "adam", metrics = ['accuracy'])
 
     md.summary()
 
     print(X_train.shape)
     print(y_train.shape)
-
-    # reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.2, patience=5, min_lr=0.000001)
-
-    # training_generator = BalancedBatchGenerator(X_train, y_train, batch_size=32, random_state=42)
-    # callback_history = md.fit_generator(generator=training_generator, steps_per_epoch=100, epochs=100, verbose=0)
 
     history = md.fit(X_train, y_train, epochs = 200, validation_data = (X_test, y_test),shuffle=True, verbose=2)
 
@@ -81,9 +72,3 @@ def FeedForwardNeuralNetwork(X_train, y_train, X_test, y_test):
     y_true,y_pred = util.get_prediction_Truth_value(prediction, y_test)
 
     util.metricsMeasurement(y_true,y_pred)
-
-
-
-# X_train, y_train, X_test, y_test = load_train_test_data()
-# FeedForwardNeuralNetwork(X_train, y_train, X_test, y_test)
-

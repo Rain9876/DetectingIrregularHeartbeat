@@ -9,24 +9,24 @@ import util, balanced_sampling as bs,signalDataProcessing as sdp, \
     FeedForwardNN as FFNN, convolutionNN as CNN, LongShortTermMemoryNN as LSTM
 
 
-## A series of tests starting from extracting data from the MIT-BIH to the models training
+## A series of tests and training starting from extracting data from the MIT-BIH to the models training
 def main():
 
-    # print("-----------------------------------------------------")
-    #
-    # patientNumber = util.getPatientsNumber()
-    #
-    # for i in patientNumber[:40]:
-    #
-    #     signal = sdp.SignalDataProcessing(i,"MLII",300,60, False)
-    #
-    #     signal.writeSignalsToCSV(False)
-    #
-    #     signal.processingAllSignal("N")
-    #     signal.processingAllSignal("VEB")
-    #     signal.processingAllSignal("SVEB")
-    #     signal.processingAllSignal("F")
-    #     signal.processingAllSignal("Q")
+    print("-----------------------------------------------------")
+
+    patientNumber = util.getPatientsNumber()
+
+    for i in patientNumber[:40]:
+
+        signal = sdp.SignalDataProcessing(i,"MLII",300,60, False)
+
+        signal.writeSignalsToCSV(True)
+
+        signal.processingAllSignal("N")
+        signal.processingAllSignal("VEB")
+        signal.processingAllSignal("SVEB")
+        signal.processingAllSignal("F")
+        signal.processingAllSignal("Q")
 
 
     imLearn = bs.balanced_Sampling(60)
@@ -44,7 +44,7 @@ def main():
 
     # print("Feed Forward Neural Network:")
     # FFNN.FeedForwardNeuralNetwork(X_train, y_train, X_test, y_test)
-    #
+
     # X_train = np.expand_dims(X_train, axis=2)
     # X_test = np.expand_dims(X_test, axis=2)
 

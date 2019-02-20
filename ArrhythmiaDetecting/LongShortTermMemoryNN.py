@@ -73,9 +73,3 @@ def LongShortTermMemoryNeuralNetwork(X_train, y_train, X_test, y_test):
     y_true, y_pred = util.get_prediction_Truth_value(prediction, y_test)
 
     util.metricsMeasurement(y_true, y_pred)
-
-
-
-# X_train, y_train, X_test, y_test = load_train_test_data()
-# LongShortTermMemoryNeuralNetwork(X_train, y_train, X_test, y_test)
-

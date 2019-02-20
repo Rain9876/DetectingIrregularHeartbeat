@@ -64,8 +64,6 @@ def ConvolutionNeuralNetwork(X_train, y_train, X_test, y_test):
 
     cnn.summary()
 
-    # reduce_lr = ReduceLROnPlateau(monitor='val_acc', factor=0.2, patience=3, min_lr=0.0001)
-
     result = cnn.fit(X_train, y_train, epochs= 50, batch_size=16, verbose=1, validation_data=(X_test, y_test))
 
     # cnn.save("./Model/CNN_model_4.h5")
@@ -78,7 +76,3 @@ def ConvolutionNeuralNetwork(X_train, y_train, X_test, y_test):
 
     util.metricsMeasurement(y_true,y_pred)
 
-
-
-# X_train, y_train, X_test, y_test = load_train_test_data()
-# ConvolutionNeuralNetwork(X_train, y_train, X_test, y_test)

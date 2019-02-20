@@ -12,7 +12,7 @@
 
    The annotation file of patient No.100 looks like this:
 
-   ![annotationFile](./atr_data.png)
+   ![annotationFile](./Evalution/README_Figure/atr_data.png)
 
    For instance, heart beat selected by the green line has Type A, which belongs to arrhythmia.
 
@@ -22,36 +22,36 @@
 2. Extract the signal file from MIT-BIH arrhythmia DB
    The signal file of patient No.100 looks like this:
 
-   ![signalFile](./signal_data.png)
+   ![signalFile](./Evalution/README_Figure/signal_data.png)
 
 
 
 3. Slice the a series of signal by 300 window
 
-   ![sliceWindow](./heartBeats.png)
+   ![sliceWindow](./Evalution/README_Figure/heartBeats.png)
 
 
 
 4. Find the R peak of each sliced single beat
 
-   ![singleBeat](./singleBeat.png)
+   ![singleBeat](./Evalution/README_Figure/singleBeat.png)
 
 
 
 5. Appling Discrete Wavelet Transform (DWT) to decomping the sigal file
   + Adjust basline draft
     
-    ![baseLine](./DWT/BaseLineDraft.png)
+    ![baseLine](./Evalution/README_Figure/DWT/BaseLineDraft.png)
 
   + Remove the High frequency noise
     
-    ![DWT](./DWT/DWT.png)
+    ![DWT](./Evalution/README_Figure/DWT/DWT.png)
 
 
 
 6. Interpolate the sigal diagram and transform from 300 signal points to 60 signal points
 
-   ![processedSignal](processedSingleBeat.png)
+   ![processedSignal](./Evalution/README_Figure/processedSingleBeat.png)
    
    Split the signals to two section, left R peak and Right of R peak.
    Process each section in  order to keep the R peak in the 60 data point.
@@ -73,12 +73,12 @@
 ## Model
   Feed Forward Neural Network (Multi-layer Neural Network)
     
-   ![FFNN](FFNN_Model.png)
+   ![FFNN](./Evalution/README_Figure/FFNN_Model.png)
 
 
   Covolutional Neural Network
 
-   ![CNN](CNN_Model.png)
+   ![CNN](./Evalution/README_Figure/CNN_Model.png)
 
 
   Long Short Term Memory Neural Network
@@ -97,6 +97,6 @@ Confusion Matrix
 
 
 Average accuracy
-+ Feed Forward Neural Network Accuracy: 97.9%
-+ Convolution Neural Network Accuracy: 99.2%
-+ Long short term Memory Neural Network Accuracy: 98.5%
++ Feed Forward Neural Network Accuracy: 97.97%
++ Convolution Neural Network Accuracy: 99.37%
++ Long short term Memory Neural Network Accuracy: 99.10%
