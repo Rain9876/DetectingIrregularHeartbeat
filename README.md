@@ -11,8 +11,8 @@
    Each row matches a heart beat, which records the time, sample index, Type and etc.
 
    The annotation file of patient No.100 looks like this:
-
-   ![annotationFile](./Evalution/README_Figure/atr_data.png)
+   
+   <img src="./Evaluation/README_Figure/atr_data.png" width="80">
 
    For instance, heart beat selected by the green line has Type A, which belongs to arrhythmia.
 
@@ -22,37 +22,35 @@
 2. Extract the signal file from MIT-BIH arrhythmia DB
    The signal file of patient No.100 looks like this:
 
-   ![signalFile](./Evalution/README_Figure/signal_data.png)
-
+   <img src="./Evaluation/README_Figure/signal_data.png" width="80">
 
 
 3. Slice the a series of signal by 300 window
 
-   <img src="./Evalution/README_Figure/heartBeat.png" width ="40">
+   <img src="./Evaluation/README_Figure/heartBeats.png" width="80">
 
 
 
 4. Find the R peak of each sliced single beat
 
-   ![singleBeat](./Evalution/README_Figure/singleBeat.png)
-
+   <img src="./Evaluation/README_Figure/singleBeat.png" width="80">
 
 
 5. Appling Discrete Wavelet Transform (DWT) to decomping the sigal file
   + Adjust basline draft
     
-    ![baseLine](./Evalution/README_Figure/DWT/BaselineDraft.png)
+   <img src="./Evaluation/README_Figure/DWT/BaselineDraft.png" width="80">
 
   + Remove the High frequency noise
     
-    ![DWT](./Evalution/README_Figure/DWT/DWT.png)
+   <img src="./Evaluation/README_Figure/DWT/DWT.png" width="80">
 
 
 
 6. Interpolate the sigal diagram and transform from 300 signal points to 60 signal points
 
-   ![processedSignal](./Evalution/README_Figure/processedSingleBeat.png)
-   
+   <img src="./Evaluation/README_Figure/processedSingleBeat.png" width="80">
+
    Split the signals to two section, left R peak and Right of R peak.
    Process each section in  order to keep the R peak in the 60 data point.
 
@@ -72,13 +70,14 @@
 
 ## Model
   Feed Forward Neural Network (Multi-layer Neural Network)
-    
-   ![FFNN](./Evalution/README_Figure/FFNN_Model.png)
-
+  
+  <img src="./Evaluation/README_Figure/FFNN_Model.png" width="80">
+ 
 
   Covolutional Neural Network
+     
+  <img src="./Evaluation/README_Figure/CNN_Model.png" width="80">
 
-   ![CNN](./Evalution/README_Figure/CNN_Model.png)
 
 
   Long Short Term Memory Neural Network
