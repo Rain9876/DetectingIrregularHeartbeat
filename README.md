@@ -28,7 +28,7 @@
 
 3. Slice the a series of signal by 300 window
 
-   <img src="./Evalution/README_Figure/heartBeat.png" width ="40">
+   <img src="./Evalution/README_Figure/heartBeat.png">
 
 
 
