@@ -28,7 +28,7 @@
 
 3. Slice the a series of signal by 300 window
 
-   ![sliceWindow](./Evalution/README_Figure/heartBeats.png)
+   <img src="./Evalution/README_Figure/heartBeat.png" width ="40">
 
 
 
@@ -41,7 +41,7 @@
 5. Appling Discrete Wavelet Transform (DWT) to decomping the sigal file
   + Adjust basline draft
     
-    ![baseLine](./Evalution/README_Figure/DWT/BaseLineDraft.png)
+    ![baseLine](./Evalution/README_Figure/DWT/BaselineDraft.png)
 
   + Remove the High frequency noise
     
