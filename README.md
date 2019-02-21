@@ -12,7 +12,7 @@
 
    The annotation file of patient No.100 looks like this:
    
-   <img src="./Evaluation/README_Figure/atr_data.png" width="80">
+   <img src="./Evaluation/README_Figure/atr_data.png" width="150">
 
    For instance, heart beat selected by the green line has Type A, which belongs to arrhythmia.
 
@@ -27,29 +27,29 @@
 
 3. Slice the a series of signal by 300 window
 
-   <img src="./Evaluation/README_Figure/heartBeats.png" width="120">
+   <img src="./Evaluation/README_Figure/heartBeats.png" width="180">
 
 
 
 4. Find the R peak of each sliced single beat
 
-   <img src="./Evaluation/README_Figure/singleBeat.png" width="120">
+   <img src="./Evaluation/README_Figure/singleBeat.png" width="180">
 
 
 5. Appling Discrete Wavelet Transform (DWT) to decomping the sigal file
   + Adjust basline draft
     
-    <img src="./Evaluation/README_Figure/DWT/BaselineDraft.png" width="120">
+    <img src="./Evaluation/README_Figure/DWT/BaselineDraft.png" width="180">
 
   + Remove the High frequency noise
     
-    <img src="./Evaluation/README_Figure/DWT/DWT.png" width="120">
+    <img src="./Evaluation/README_Figure/DWT/DWT.png" width="180">
 
 
 
 6. Interpolate the sigal diagram and transform from 300 signal points to 60 signal points
 
-   <img src="./Evaluation/README_Figure/processedSingleBeat.png" width="120">
+   <img src="./Evaluation/README_Figure/processedSingleBeat.png" width="180">
 
    Split the signals to two section, left R peak and Right of R peak.
    Process each section in  order to keep the R peak in the 60 data point.
@@ -71,12 +71,12 @@
 ## Model
   Feed Forward Neural Network (Multi-layer Neural Network)
   
-   <img src="./Evaluation/README_Figure/FFNN_Model.png" width="150">
+   <img src="./Evaluation/README_Figure/FFNN_Model.png" width="200">
  
 
   Covolutional Neural Network
      
-   <img src="./Evaluation/README_Figure/CNN_Model.png" width="150">
+   <img src="./Evaluation/README_Figure/CNN_Model.png" width="200">
 
 
 
