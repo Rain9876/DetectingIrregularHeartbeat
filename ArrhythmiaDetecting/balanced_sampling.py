@@ -10,20 +10,16 @@
 #
 
 
-from imblearn.keras import BalancedBatchGenerator
 from imblearn.combine import SMOTEENN
 from imblearn.under_sampling import NearMiss, EditedNearestNeighbours,TomekLinks
 from imblearn.over_sampling import SMOTE
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import MinMaxScaler,LabelEncoder
 from sklearn.utils import shuffle
 from collections import Counter
-import keras
 import pandas as pd
 import numpy as np
 import util
-import matplotlib.pyplot as plt
-
+from sklearn.preprocessing import MinMaxScaler
 
 
 class balanced_Sampling:
@@ -122,31 +118,27 @@ class balanced_Sampling:
             X_data, Y_data = enn.fit_resample(X_data,Y_data)
             print('2nd Resampled dataset shape %s' % Counter(Y_data))
 
-        X_data, Y_data = shuffle(X_data,Y_data,random_state = 2)
+        X_data, Y_data = shuffle(X_data,Y_data)
 
         return X_data, Y_data
+
 
     ## Split the samples into Training and Testing sets
     ## Scaler the these value between 0 and 1
     def train_test_data(self,X_data,Y_data):
-        X_train,X_test,y_train,y_test = train_test_split(X_data,Y_data,random_state=2)
+
+        X_train,X_test,y_train,y_test = train_test_split(X_data,Y_data)
 
         print(X_train.shape)
         print(y_train.shape)
         print(X_test.shape)
         print(y_test.shape)
 
-        # Data needs to be scaled to a small range like 0 to 1 for the neural network to work well.
-
-        scaler = MinMaxScaler(feature_range=(0, 1))
-
-        X_train = scaler.fit_transform(X_train)
-        X_test  = scaler.transform(X_test)
-
         return X_train,X_test,y_train,y_test
 
+
     ## Write the Training and Testing data into csv file
-    def write_TrainingTesting_toCSV(self, X_train, X_test, y_train, y_test):
+    def write_TrainingTesting_toCSV(self, X_train, y_train,X_test, y_test):
         pd.DataFrame(X_train).to_csv(self.path+"training_signals.csv",mode="w",index=False)
         pd.DataFrame(y_train).to_csv(self.path+"training_labels.csv",mode="w", index= False)
         pd.DataFrame(X_test).to_csv(self.path+"testing_signals.csv",mode="w", index= False)
@@ -156,15 +148,11 @@ class balanced_Sampling:
     ## Read the Training and Testing data from csv file
     def read_TrainingTesting_data(self):
         X_train = pd.read_csv(self.path + "training_signals.csv", dtype=np.float).values
-        X_test = pd.read_csv(self.path + "testing_signals.csv", dtype=np.float).values
         y_train = pd.read_csv(self.path + "training_labels.csv", dtype=np.int32).values
+        X_test = pd.read_csv(self.path + "testing_signals.csv", dtype=np.float).values
         y_test = pd.read_csv(self.path + "testing_labels.csv", dtype=np.int32).values
 
         return X_train, y_train, X_test, y_test
-
-
-
-
 
 
 ###---Testing----------------------------------------------------###

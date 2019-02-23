@@ -1,4 +1,3 @@
-import pywt
 import pywt.data
 import numpy as np
 import matplotlib.pyplot as plt

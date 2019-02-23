@@ -6,18 +6,13 @@
 # Training, testing and evaluation
 #
 
-import numpy as np
-import pandas as pd
-from keras.models import Sequential
+from keras.models import Sequential,load_model
 from keras.layers import *
 from keras.utils import to_categorical
-from keras.optimizers import SGD,adamax
-from keras.callbacks import ReduceLROnPlateau
-import matplotlib.pyplot as plt
+from sklearn.model_selection import KFold,StratifiedKFold
 import util, balanced_sampling as bs
-from imblearn.keras import BalancedBatchGenerator
-from imblearn.combine import SMOTEENN
-from collections import Counter
+from sklearn.preprocessing import MinMaxScaler
+
 
 
 ## Load training and testing data
@@ -27,14 +22,7 @@ def load_train_test_data():
 
     X_train, y_train, X_test, y_test = imbLearn.read_TrainingTesting_data()
 
-    y_train = to_categorical(y_train)
-
-    y_test = to_categorical(y_test)
-
-    print(X_train.shape)
-    print(y_train.shape)
-    print(X_test.shape)
-    print(y_test.shape)
+    X_train, y_train, X_test, y_test = util.adjustInputDimension(X_train, y_train, X_test, y_test, 1)
 
     return X_train, y_train, X_test, y_test
 
@@ -61,9 +49,9 @@ def FeedForwardNeuralNetwork(X_train, y_train, X_test, y_test):
     print(X_train.shape)
     print(y_train.shape)
 
-    history = md.fit(X_train, y_train, epochs = 200, validation_data = (X_test, y_test),shuffle=True, verbose=2)
+    history = md.fit(X_train, y_train, epochs = 100, validation_data = (X_test, y_test),shuffle=True, verbose=2)
 
-    # md.save("./Model/FFNN_model_4.h5")
+    # md.save("./Model/MLII/FFNN_model_1.h5")
 
     util.plotAccuracyGraph(history)
 
@@ -71,4 +59,6 @@ def FeedForwardNeuralNetwork(X_train, y_train, X_test, y_test):
 
     y_true,y_pred = util.get_prediction_Truth_value(prediction, y_test)
 
-    util.metricsMeasurement(y_true,y_pred)
+    accuracy = util.metricsMeasurement(y_true,y_pred)
+
+    return accuracy

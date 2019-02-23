@@ -7,7 +7,8 @@
 
 ## Processing signal
 
-1. Extract the annotation file from MIT-BIH arrhythmia DB
+1. Extract the annotation file from MIT-BIH arrhythmia Database.
+
    Each row matches a heart beat, which records the time, sample index, Type and etc.
 
    The annotation file of patient No.100 looks like this:
@@ -17,7 +18,7 @@
    For instance, heart beat selected by the green line has Type A, which belongs to arrhythmia.
 
    All the type symbols are divided into five classifications
-   ** N, VEB, SVEB, F, Q **
+    N, VEB, SVEB, F, Q 
 
 2. Extract the signal file from MIT-BIH arrhythmia DB
    The signal file of patient No.100 looks like this:
@@ -25,7 +26,7 @@
    <img src="./Evaluation/README_Figure/signal_data.png" width="120">
 
 
-3. Slice the a series of signal by 300 window
+3. Slice the a series of signal by a window size of 300
 
    <img src="./Evaluation/README_Figure/heartBeats.png" width="180">
 
@@ -36,7 +37,7 @@
    <img src="./Evaluation/README_Figure/singleBeat.png" width="180">
 
 
-5. Appling Discrete Wavelet Transform (DWT) to decomping the sigal file
+5. Implement Discrete Wavelet Transform (DWT) to decomping the sigal file
   + Adjust basline draft
     
     <img src="./Evaluation/README_Figure/DWT/BaselineDraft.png" width="180">

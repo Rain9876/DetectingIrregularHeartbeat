@@ -7,11 +7,9 @@
 # Training, testing and evaluation
 #
 
-import pandas as pd
 from keras.models import Sequential, load_model
 from keras.layers import *
 from keras.utils import to_categorical
-import matplotlib.pyplot as plt
 import numpy as np
 import util, balanced_sampling as bs
 
@@ -23,18 +21,7 @@ def load_train_test_data():
 
     X_train, y_train, X_test, y_test = imbLearn.read_TrainingTesting_data()
 
-    y_train = to_categorical(y_train)
-
-    y_test = to_categorical(y_test)
-
-    X_train = np.expand_dims(X_train, axis=2)
-
-    X_test = np.expand_dims(X_test, axis=2)
-
-    print(X_train.shape)
-    print(y_train.shape)
-    print(X_test.shape)
-    print(y_test.shape)
+    X_train, y_train, X_test, y_test = util.adjustInputDimension(X_train,y_train,X_test,y_test,2)
 
     return X_train, y_train, X_test, y_test
 
@@ -64,7 +51,7 @@ def LongShortTermMemoryNeuralNetwork(X_train, y_train, X_test, y_test):
 
     result = LSTM_model.fit(X_train, y_train, batch_size= 32, epochs=50, verbose=1, validation_data=(X_test, y_test))
 
-    # LSTM_model.save("./Model/LSTM_model_3.h5")
+    # LSTM_model.save("./Model/MLII/LSTM_model_1.h5")
 
     util.plotAccuracyGraph(result)
 

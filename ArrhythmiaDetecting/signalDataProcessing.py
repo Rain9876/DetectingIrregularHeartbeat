@@ -20,7 +20,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import annotationDataProcessing as ap
 import util
-from scipy.interpolate import spline
 from scipy.interpolate import make_interp_spline, BSpline, CubicSpline
 from scipy.signal import cspline1d
 import pywt

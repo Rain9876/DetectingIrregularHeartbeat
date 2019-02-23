@@ -3,7 +3,8 @@ from wfdb import rdsamp,rdann
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
-
+from keras.utils import to_categorical
+from sklearn.preprocessing import MinMaxScaler
 
 # 0
 NormalType = ["N", "L", "R"]
@@ -17,7 +18,7 @@ F = ["F"]
 Q = ["Q","/","f","u"]
 
 
-
+# Get the signal type symbols
 def getNormalType():
     return NormalType
 
@@ -37,7 +38,7 @@ def getTypeNameList():
     return ["N","VEB","SVEB","F","Q"]
 
 
-
+# Print out the confusion matrix and evaluation accuracy
 def metricsMeasurement(y_true, y_pred):
 
     print("-------------------------------")
@@ -59,8 +60,9 @@ def metricsMeasurement(y_true, y_pred):
         temp = "| precision: {:.2f} | recall: {:.2f} | F1 score: {:.2f} | {}".format(precision[i],recall[i],fscore[i],typeNameList[i])
         print (temp)
 
+    return accuracy
 
-
+# Get the y_truth and y_pred value
 def get_prediction_Truth_value(prediction, y_test):
     y_true = []
     y_pred = []
@@ -76,7 +78,7 @@ def get_prediction_Truth_value(prediction, y_test):
     return y_true, y_pred
 
 
-
+# Plot the evaluation accuracy and training accuracy graph
 def plotAccuracyGraph(model):
     plt.plot(model.history['acc'])
     plt.plot(model.history['val_acc'])
@@ -94,12 +96,13 @@ def getPatientsNumber():
     f.close()
     return patientNumber
 
-
+# WFDB to extract the annotation file from MIT-BIH online
 def getPatientsAtrFile(patientsNumber):
     ann = rdann(patientsNumber,"atr",pb_dir="mitdb")
     return ann.sample, ann.symbol
 
 
+# WFDB to get the signal Dataframe and signal frequency from MIT-BIH signal Data file online
 def getPatientsDatFile(patientsNumber,signalName):
 
     signals, fields = rdsamp(patientsNumber,pb_dir="mitdb")
@@ -108,3 +111,30 @@ def getPatientsDatFile(patientsNumber,signalName):
     df = pd.Series((v[index] for v in signals), name=signalName)
 
     return df, frequency
+
+
+## Adjust the input dimension for different Neural Network
+def adjustInputDimension(X_train,y_train,X_test,y_test,d = 1):
+
+    # Data needs to be scaled to a small range like 0 to 1 for the neural network to work well.
+
+    scaler = MinMaxScaler(feature_range=(0, 1))
+
+    X_train = scaler.fit_transform(X_train)
+
+    X_test = scaler.transform(X_test)
+
+    y_train = to_categorical(y_train)
+    y_test = to_categorical(y_test)
+
+    # For CNN and LSTM, the dimension needs expanded
+    if d == 2:
+        X_train = np.expand_dims(X_train, axis=2)
+        X_test = np.expand_dims(X_test, axis=2)
+
+    # print(X_train.shape)
+    # print(y_train.shape)
+    # print(X_test.shape)
+    # print(y_test.shape)
+
+    return X_train,y_train,X_test,y_test

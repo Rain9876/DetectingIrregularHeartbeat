@@ -2,25 +2,22 @@
 ## Date: 2019/01/30
 ## Project: Deep Learning about detecting irregular heartbeat
 #
-
 import numpy as np
 from keras.utils import to_categorical
-import util, balanced_sampling as bs,signalDataProcessing as sdp, \
-    FeedForwardNN as FFNN, convolutionNN as CNN, LongShortTermMemoryNN as LSTM
+import util, model_testing, balanced_sampling as bs,signalDataProcessing as sdp, \
+    FeedForwardNN as FFNN, ConvolutionalNN as CNN, LongShortTermMemoryNN as LSTM
 
 
-## A series of tests and training starting from extracting data from the MIT-BIH to the models training
-def main():
-
-    print("-----------------------------------------------------")
+# Signal Processing
+def ProcessingSignal(start= 1,end= 47,type= "MLII",sliceWindow= 300,output_shape= 60,WFDB= False, writeDown= False):
 
     patientNumber = util.getPatientsNumber()
 
-    for i in patientNumber[:40]:
+    for i in patientNumber[start:end]:
 
-        signal = sdp.SignalDataProcessing(i,"MLII",300,60, False)
+        signal = sdp.SignalDataProcessing(i,type,sliceWindow,output_shape, WFDB)
 
-        signal.writeSignalsToCSV(True)
+        signal.writeSignalsToCSV(writeDown)
 
         signal.processingAllSignal("N")
         signal.processingAllSignal("VEB")
@@ -29,32 +26,52 @@ def main():
         signal.processingAllSignal("Q")
 
 
-    imLearn = bs.balanced_Sampling(60)
+# balance sampling
+def data_balancing(input_shape= 60,amount= 20000):
 
-    X_signal, Y_label = imLearn.featureExtract()
+    imbLearn = bs.balanced_Sampling(input_shape)
 
-    X_data, Y_data = imLearn.balanceSamples(X_signal, Y_label,20000)
+    X_signal, Y_label = imbLearn.featureExtract()
 
-    X_train,X_test,y_train,y_test = imLearn.train_test_data(X_data,Y_data)
+    X_data, Y_data = imbLearn.balanceSamples(X_signal, Y_label,amount)
 
-    ## imLearn.write_TrainingTesting_toCSV(X_train,X_test,y_train,y_test)
+    X_train,X_test,y_train,y_test = imbLearn.train_test_data(X_data,Y_data)
 
-    y_train = to_categorical(y_train)
-    y_test = to_categorical(y_test)
+    # imbLearn.write_TrainingTesting_toCSV(X_train,y_train,X_test,y_test)
 
-    # print("Feed Forward Neural Network:")
-    # FFNN.FeedForwardNeuralNetwork(X_train, y_train, X_test, y_test)
-
-    # X_train = np.expand_dims(X_train, axis=2)
-    # X_test = np.expand_dims(X_test, axis=2)
-
-    # print("Convolution Neural Network:")
-    # CNN.ConvolutionNeuralNetwork(X_train, y_train, X_test, y_test)
+    return X_train,X_test,y_train,y_test
 
 
-    # print("Long Short Term Memory Neural Network:")
-    # LSTM.LongShortTermMemoryNeuralNetwork(X_train, y_train, X_test, y_test)
+
+#  No.1 is Feed Forward Neural Network;
+#  No.2 is Convolutional Neural Network;
+#  No.3 is Long Short Term Memory Neural Network
+def constructNeuralNetworkModels(X_train,X_test,y_train,y_test, number):
+
+    if number == 1:
+        print("Feed Forward Neural Network:")
+        X_train, y_train, X_test, y_test = util.adjustInputDimension(X_train, y_train, X_test, y_test, 1)
+        FFNN.FeedForwardNeuralNetwork(X_train, y_train, X_test, y_test)
+
+    elif number == 2:
+        print("Convolutional Neural Network:")
+        X_train, y_train, X_test, y_test = util.adjustInputDimension(X_train, y_train, X_test, y_test, 2)
+        CNN.ConvolutionalNeuralNetwork(X_train, y_train, X_test, y_test)
+
+    elif number == 3:
+        print("Long Short Term Memory Neural Network:")
+        X_train, y_train, X_test, y_test = util.adjustInputDimension(X_train, y_train, X_test, y_test, 2)
+        LSTM.LongShortTermMemoryNeuralNetwork(X_train, y_train, X_test, y_test)
 
 
 if __name__ == '__main__':
-    main()
+
+    print("-----------------------------------------------------")
+
+    # ProcessingSignal(1,47,"MLII",300,60,True,False)
+
+    # X_train, X_test, y_train, y_test = data_balancing(60, 20000)
+
+    # constructNeuralNetworkModels(X_train, X_test, y_train, y_test,1)
+
+    # model_testing.KFoldCrossValidation(5,2)
