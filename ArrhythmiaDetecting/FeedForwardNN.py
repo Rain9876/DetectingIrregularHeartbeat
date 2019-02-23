@@ -49,7 +49,7 @@ def FeedForwardNeuralNetwork(X_train, y_train, X_test, y_test):
     print(X_train.shape)
     print(y_train.shape)
 
-    history = md.fit(X_train, y_train, epochs = 100, validation_data = (X_test, y_test),shuffle=True, verbose=2)
+    history = md.fit(X_train, y_train, epochs = 200, validation_data = (X_test, y_test),shuffle=True, verbose=2)
 
     # md.save("./Model/MLII/FFNN_model_1.h5")
 
