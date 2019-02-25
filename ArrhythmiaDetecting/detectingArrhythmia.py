@@ -9,6 +9,26 @@ import util, model_testing, balanced_sampling as bs,signalDataProcessing as sdp,
 
 
 # Signal Processing
+#
+# It takes patient number from 1 to 47 can be found in PatientNumber.txt
+# Other patients can be selected if it changes.
+#
+# Default Lead type is MLII and others like V1, V5 can also be test
+# Set WFDB is true, if other type is wanted
+#
+# sliceWindow and output_shape can be to control the input and output shape
+#
+# WFDB is a tool to extract data online from MIT-BIH.
+# If false, MLII signal in local file will be used.
+#
+# writeDown is used to record the processed signal into csv file.
+# Empty ProcessSignla folder, If new processed signals are recorded
+#
+# The ProcessedSignal folder in Dataset should have Five files eventually.
+# N.csv, VEB.csv, SVEB.csv, F.csv, Q.csv
+#
+
+
 def ProcessingSignal(start= 1,end= 47,type= "MLII",sliceWindow= 300,output_shape= 60,WFDB= False, writeDown= False):
 
     patientNumber = util.getPatientsNumber()
@@ -26,7 +46,18 @@ def ProcessingSignal(start= 1,end= 47,type= "MLII",sliceWindow= 300,output_shape
         signal.processingAllSignal("Q")
 
 
+
 # balance sampling
+#
+# Input_shape should be identical with the ProcessedSignal method's output_shape
+#
+# amount is the criteria that sampling method should reach
+# so that all classification type have exactly that amount of samples
+#
+# Return X_train,X_test,y_train,y_test data, which can be writen down into csv file
+#
+
+
 def data_balancing(input_shape= 60,amount= 20000):
 
     imbLearn = bs.balanced_Sampling(input_shape)
@@ -46,6 +77,10 @@ def data_balancing(input_shape= 60,amount= 20000):
 #  No.1 is Feed Forward Neural Network;
 #  No.2 is Convolutional Neural Network;
 #  No.3 is Long Short Term Memory Neural Network
+#
+#  Adjust the different Neural Network's input dimension and each contains training, testing & evaluation
+#
+
 def constructNeuralNetworkModels(X_train,X_test,y_train,y_test, number):
 
     if number == 1:
@@ -64,6 +99,14 @@ def constructNeuralNetworkModels(X_train,X_test,y_train,y_test, number):
         LSTM.LongShortTermMemoryNeuralNetwork(X_train, y_train, X_test, y_test)
 
 
+
+
+# Example
+# Processing ECG signal of all MLII type patients from MIT-BIH online
+# Balance the classification samples to 20000 each
+# Construct the Feed Forward Neural Network
+# 5 fold cross vaildation testing of that model
+
 if __name__ == '__main__':
 
     print("-----------------------------------------------------")
@@ -74,4 +117,4 @@ if __name__ == '__main__':
 
     # constructNeuralNetworkModels(X_train, X_test, y_train, y_test,1)
 
-    # model_testing.KFoldCrossValidation(5,2)
+    # model_testing.KFoldCrossValidation(5,1)

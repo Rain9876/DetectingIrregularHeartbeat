@@ -100,3 +100,23 @@ Average accuracy
 + Feed Forward Neural Network Accuracy: 97.9%
 + Convolution Neural Network Accuracy: 99.3%
 + Long short term Memory Neural Network Accuracy: 99.1%
+
+
+
+## Running
+
+`detectingArrhymia.py` is main source file
+
+`python 3.6` is suggested to run the code. 
+
+Environment & packages:
+
+    Numpy
+    Keras
+    Matplotlib
+    Pandas
+    sklearn
+    WFDB (Extract data from MIT-BIH database)
+    PyWavelets (Processing signal data)
+    imblearn (Oversampling and undersampling)
+

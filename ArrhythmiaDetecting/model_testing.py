@@ -91,6 +91,10 @@ def LSTM_Model_Testing():
 
 
 # K Fold Cross Validation to obtain the average accuracy
+# No.1 is Feed Forward Neural Network;
+# No.2 is Convolutional Neural Network;
+# No.3 is Long Short Term Memory Neural Network
+
 def KFoldCrossValidation(k, number):
     imbLearn = bs.balanced_Sampling(60)
 
