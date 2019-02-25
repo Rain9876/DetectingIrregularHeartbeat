@@ -118,7 +118,7 @@ class balanced_Sampling:
             X_data, Y_data = enn.fit_resample(X_data,Y_data)
             print('2nd Resampled dataset shape %s' % Counter(Y_data))
 
-        X_data, Y_data = shuffle(X_data,Y_data)
+        X_data, Y_data = shuffle(X_data,Y_data,random_state = 42)
 
         return X_data, Y_data
 
@@ -127,7 +127,7 @@ class balanced_Sampling:
     ## Scaler the these value between 0 and 1
     def train_test_data(self,X_data,Y_data):
 
-        X_train,X_test,y_train,y_test = train_test_split(X_data,Y_data)
+        X_train,X_test,y_train,y_test = train_test_split(X_data,Y_data,random_state= 42)
 
         print(X_train.shape)
         print(y_train.shape)

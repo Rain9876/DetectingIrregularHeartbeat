@@ -97,6 +97,6 @@ Confusion Matrix
 
 
 Average accuracy
-+ Feed Forward Neural Network Accuracy: 97.97%
-+ Convolution Neural Network Accuracy: 99.37%
-+ Long short term Memory Neural Network Accuracy: 99.10%
++ Feed Forward Neural Network Accuracy: 97.9%
++ Convolution Neural Network Accuracy: 99.3%
++ Long short term Memory Neural Network Accuracy: 99.1%
