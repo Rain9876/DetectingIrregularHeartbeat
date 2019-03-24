@@ -11,7 +11,7 @@
 
 
 from imblearn.combine import SMOTEENN
-from imblearn.under_sampling import NearMiss, EditedNearestNeighbours,TomekLinks
+from imblearn.under_sampling import NearMiss
 from imblearn.over_sampling import SMOTE
 from sklearn.model_selection import train_test_split
 from sklearn.utils import shuffle
@@ -19,7 +19,6 @@ from collections import Counter
 import pandas as pd
 import numpy as np
 import util
-from sklearn.preprocessing import MinMaxScaler
 
 
 class balanced_Sampling:
@@ -64,15 +63,15 @@ class balanced_Sampling:
     ## Handling the balance-sampling
     ## Take two lists from the featureExtract and give the standand samples amount you want to achieve
     ## If nothing is provided, then oversampling (SMOTEENN) all the samples to Maximun
-    ## Otherwise, oversamples (NearMiss) the minority class first, then undersamples (SMOTE) to the standard amount
+    ## Otherwise, oversamples (NearMiss) the minority class first, then undersamples (SMOTE) to the standard criteria
     ## Shuffle the samples and feature at last
     ## Suggested amount: 3000 ~ 70000
-    def balanceSamples(self,X_sampling, Y_sampling, amount = 0):
+    def balanceSamples(self,X_sampling, Y_sampling, criteria = 0):
 
         X_data = np.empty([0, self.sampleShape])
         Y_data = np.array([])
 
-        if amount == 0:
+        if criteria == 0:
 
             for i in range(5):
                 X_data = np.append(X_data,X_sampling[i],axis=0)
@@ -93,9 +92,9 @@ class balanced_Sampling:
             sub_strategy = {}
 
             for i in range(5):
-                strategy[i] = amount
+                strategy[i] = criteria
 
-                if len(X_sampling[i]) > amount:
+                if len(X_sampling[i]) > criteria:
 
                     X_underSampling = np.append(X_underSampling,X_sampling[i],axis=0)
                     Y_underSampling = np.append(Y_underSampling,Y_sampling[i],axis=0)
@@ -104,7 +103,7 @@ class balanced_Sampling:
 
                     X_overSampling = np.append(X_overSampling, X_sampling[i], axis=0)
                     Y_overSampling = np.append(Y_overSampling, Y_sampling[i], axis=0)
-                    sub_strategy[i] = amount
+                    sub_strategy[i] = criteria
 
 
             smote = SMOTE(sampling_strategy= sub_strategy,random_state = 42)

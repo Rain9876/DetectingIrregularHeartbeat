@@ -20,9 +20,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 import annotationDataProcessing as ap
 import util
-from scipy.interpolate import make_interp_spline, BSpline, CubicSpline
-from scipy.signal import cspline1d
+import math
+from scipy.interpolate import CubicSpline
+from scipy.signal._peak_finding import find_peaks
 import pywt
+
 
 
 class SignalDataProcessing:
@@ -54,7 +56,7 @@ class SignalDataProcessing:
 
         self.signalContent = pd.read_csv(f"../Dataset/Signal/{self.patientNumber}_signal.csv",skiprows=[1])
 
-        self.annotation = ap.AnnotationProcessing(self.patientNumber)
+        self.annotation = ap.AnnotationProcessing(self.patientNumber,False)
 
         # The signal header format is a string "'Signal'".
         signal = "'" + self.leadType + "'"
@@ -68,19 +70,21 @@ class SignalDataProcessing:
 
         self.signalContent.Signal = self.baseLineDrift_denoise(signalArray)[:len(self.signalContent.Signal)]
 
+        ## R peak detection
+        # self.RPeakDetection(self.signalContent.Signal.values)
+
         self.printPatientInfor()
 
 
     ## Read the signal file directly from MIT-BIH database by WFDB and decomposing the signal data
     def getSigalFileByWFDB(self):
 
-        self.annotation = ap.AnnotationProcessing(self.patientNumber)
+        self.annotation = ap.AnnotationProcessing(self.patientNumber,True)
 
         dfSignal, frequency = util.getPatientsDatFile(self.patientNumber,self.leadType)
 
         signalArray = self.baseLineDrift_denoise(dfSignal.values)
 
-        # timeList = list(range(len(signalArray)))*(1/frequency)
         timeArray = np.arange(len(signalArray))*(1/frequency)
 
         timeArray = np.around(timeArray,decimals=3)
@@ -163,13 +167,73 @@ class SignalDataProcessing:
     def baseLineDrift_denoise(self,inputSignal):
 
         decSignal = pywt.wavedec(inputSignal, 'bior3.9',"smooth",level=8)
-        decSignal[0] = np.zeros(len(decSignal[1]))        # Remove CA8, lower frequency baseline drift
-        decSignal[-1] = None                              # Remove CD1 and CD2, high frequency noise
-        decSignal[-2] = None
 
-        recSignal =  pywt.waverec(decSignal, "bior3.9")
+        universalThreshold = [2* math.log(level.size) for level in decSignal]
+
+        thresholdValue = np.std(universalThreshold)       # universal method
+
+        decSignal[0] = np.zeros(len(decSignal[0]))        # Remove CA8, lower frequency baseline drift
+        decSignal[-1] = pywt.threshold(decSignal[-1], thresholdValue,mode="soft")
+        decSignal[-2] = pywt.threshold(decSignal[-2], thresholdValue,mode="soft")
+
+
+        # Multi level decompostion graph
+        #
+        # aa = pywt.wavedec(inputSignal, 'bior3.9', "smooth", level=8)
+        #
+        # # for i in range(len(aa)):
+        # #     aa[i] = pywt.threshold(aa[i], thresholdValue, mode="soft")
+        #
+        # fig = plt.figure(1)
+        #
+        # for i in range(9):
+        #     y = np.linspace(0, inputSignal.size,num=aa[i].size)
+        #     an = fig.add_subplot(9,1,i+1)
+        #     an.plot(y,aa[i])
+        #
+        #     if i < 8:
+        #         plt.setp(an.get_xticklabels(), visible=False)
+        #         plt.setp(an.get_yticklabels(), visible=False)
+        #
+        # # plt.legend(["CD1","CD2","CD3","CD4","CD5","CD6","CD7","CD8","CA8"].reverse())
+        # # plt.xscale("linear")
+        # # plt.legend()
+        # plt.show()
+
+
+        recSignal = pywt.waverec(decSignal, "bior3.9")
+
 
         return recSignal
+
+
+    ## Using multi Discrete Wavelet Tranform (DWT) to decompose the signal to 5 levels
+    ## wavelet mother is bior3.9, then reconstruct the signals only using CD4 and CD5
+    # The R Peak is detected by find peaks method. Accuracy is reasonable.
+    def RPeakDetection(self,inputSignal):
+
+        decR = pywt.wavedec(inputSignal, 'bior3.9', "smooth", level=5)
+
+        decR[0] = None                                      # Only d3, d4 and d5 are needed
+        decR[-1] = None                                     # Rest of them are removed
+        decR[-2] = None
+
+        recR = pywt.waverec(decR, "bior3.9","smooth")
+
+        recR = recR / max(abs(recR))                              # normalization
+
+        recR = recR * recR                                        # double the height
+
+        peaks, height = find_peaks(recR, threshold=0.001,distance=100)
+
+        print(peaks.size)
+
+        plt.plot(peaks, recR[peaks], "ro")
+
+        self.plotSignal(range(recR.size), recR, "_")
+
+        return peaks
+
 
 
     ## Passing the type and number of type signals we want to extract and process individually
@@ -202,7 +266,7 @@ class SignalDataProcessing:
 
             newTime, newSignal = self.scatteredSignalPoint(i.ElapsedTime.values,i.Signal.values)
 
-            ## Plot time-signal graph for every heart beat
+            # Plot time-signal graph for every heart beat
             # self.plotSignal(newTime,newSignal,type)
 
             signalArray = np.append(signalArray,[newSignal],axis=0)
@@ -254,9 +318,11 @@ class SignalDataProcessing:
         return (newTime,newSignal)
 
 
+
     ## Write all the signals into csv file
     def writeSignalsToCSV(self, writeDown):
         self.writeDown = writeDown
+
 
     ## Processing all signals of particular type and then writing into csv file.
     def processingAllSignal(self,type):

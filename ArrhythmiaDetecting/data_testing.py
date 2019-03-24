@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 import annotationDataProcessing as adp,signalDataProcessing as sdp, balanced_sampling as bs, util
-
+import  scipy.ndimage as ndi
 
 
 ###---SignalDataProcessing----------------------------------------------------###
@@ -14,9 +14,9 @@ import annotationDataProcessing as adp,signalDataProcessing as sdp, balanced_sam
 
 # patientNumber = util.getPatientsNumber()
 #
-# for i in patientNumber[:24]:
+# for i in patientNumber[1:47]:
 #
-#     signal = sdp.SignalDataProcessing(i,"MLII",300,60, True)
+#     signal = sdp.SignalDataProcessing(i,"MLII",300,60, False)
 #
 #     signal.processingAllSignal("N")
 #     signal.processingAllSignal("VEB")
@@ -28,9 +28,9 @@ import annotationDataProcessing as adp,signalDataProcessing as sdp, balanced_sam
 
 ### Test Part 2: show a long-time heart beats graph for baseline drift
 
-# signal = sdp.SignalDataProcessing("101","MLII",300,60,False)
-# aa = signal.signalContent.ElapsedTime.values[4000:20000]
-# bb = signal.signalContent.Signal.values[4000:20000]
+# signal = sdp.SignalDataProcessing("103","MLII",300,60,False)
+# aa = signal.signalContent.ElapsedTime.values[4100:6100]
+# bb = signal.signalContent.Signal.values[4100:6100]
 # signal.plotSignal(aa,bb,"all")
 
 
