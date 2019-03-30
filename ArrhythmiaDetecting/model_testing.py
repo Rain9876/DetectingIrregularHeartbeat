@@ -33,7 +33,7 @@ def load_train_test_data(input_shape):
 
 
 # Tesing Feed Forward Neural Network Model
-def FFNN_Model_Testing():
+def FFNN_Model_Testing(path):
 
     print("Feed Forward Neural Network Results:")
 
@@ -41,7 +41,7 @@ def FFNN_Model_Testing():
 
     X_train, y_train, X_test, y_test = util.adjustInputDimension(X_train, y_train, X_test, y_test, 1)
 
-    md = load_model("./Model/MLII/FFNN_model_2.h5")
+    md = load_model(path)
 
     prediction = md.predict(X_test)
 
@@ -52,7 +52,7 @@ def FFNN_Model_Testing():
 
 
 # Tesing Convolutional Neural Network Model
-def CNN_Model_Testing():
+def CNN_Model_Testing(path):
 
     print("Convolution Neural Network Results:")
 
@@ -60,7 +60,7 @@ def CNN_Model_Testing():
 
     X_train, y_train, X_test, y_test = util.adjustInputDimension(X_train, y_train, X_test, y_test, 2)
 
-    cnn = load_model("./Model/MLII/CNN_model_1.h5")
+    cnn = load_model(path)
 
     prediction = cnn.predict(X_test)
 
@@ -71,7 +71,7 @@ def CNN_Model_Testing():
 
 
 # Tesing Long Short Term Memory Neural Network Model
-def LSTM_Model_Testing():
+def LSTM_Model_Testing(path):
 
     print("Long Short Term Memory Neural Network Results:")
 
@@ -80,7 +80,7 @@ def LSTM_Model_Testing():
 
     X_train, y_train, X_test, y_test = util.adjustInputDimension(X_train, y_train, X_test, y_test, 2)
 
-    lstm = load_model("./Model/MLII/LSTM_model_1.h5")
+    lstm = load_model(path)
 
     prediction = lstm.predict(X_test)
 

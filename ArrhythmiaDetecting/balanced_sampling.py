@@ -45,7 +45,7 @@ class balanced_Sampling:
 
         for i in range(len(typeNameList)):
 
-            signalContent = pd.read_csv(self.path + typeNameList[i]+".csv",header=pdHeader).values
+            signalContent = pd.read_csv(self.path + typeNameList[i]+".csv",header=None).values
 
             X_samplingList.append(signalContent)
 
@@ -105,6 +105,7 @@ class balanced_Sampling:
                     Y_overSampling = np.append(Y_overSampling, Y_sampling[i], axis=0)
                     sub_strategy[i] = criteria
 
+            print()
 
             smote = SMOTE(sampling_strategy= sub_strategy,random_state = 42)
             X_overSampling, Y_overSampling = smote.fit_resample(X_overSampling,Y_overSampling)

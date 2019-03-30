@@ -110,8 +110,7 @@ def constructNeuralNetworkModels(X_train,X_test,y_train,y_test, number):
 if __name__ == '__main__':
 
     print("-----------------------------------------------------")
-
-    # ProcessingSignal(1,47,"MLII",300,60,True,False)
-    # X_train, X_test, y_train, y_test = data_balancing(60, 20000)
-    # constructNeuralNetworkModels(X_train, X_test, y_train, y_test,1)
+    ProcessingSignal(1,47,"MLII",300,60,True,True)
+    X_train, X_test, y_train, y_test = data_balancing(60, 20000)
+    constructNeuralNetworkModels(X_train, X_test, y_train, y_test,1)
     # model_testing.KFoldCrossValidation(5,1)

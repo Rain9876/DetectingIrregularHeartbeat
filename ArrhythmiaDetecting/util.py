@@ -6,6 +6,10 @@ import numpy as np
 from keras.utils import to_categorical
 from sklearn.preprocessing import MinMaxScaler
 
+
+# Database, "mitdb", "incartdb",
+database = "mitdb"
+
 # 0
 NormalType = ["N", "L", "R"]
 # 1
@@ -96,16 +100,17 @@ def getPatientsNumber():
     f.close()
     return patientNumber
 
+
 # WFDB to extract the annotation file from MIT-BIH online
 def getPatientsAtrFile(patientsNumber):
-    ann = rdann(patientsNumber,"atr",pb_dir="mitdb")
+    ann = rdann(patientsNumber,"atr",pb_dir=database)
     return ann.sample, ann.symbol
 
 
 # WFDB to get the signal Dataframe and signal frequency from MIT-BIH signal Data file online
-def getPatientsDatFile(patientsNumber,signalName):
+def getPatientsDatFile(patientsNumber, signalName):
 
-    signals, fields = rdsamp(patientsNumber,pb_dir="mitdb")
+    signals, fields = rdsamp(patientsNumber,pb_dir=database)
     index = fields['sig_name'].index(signalName)
     frequency = fields['fs']
     df = pd.Series((v[index] for v in signals), name=signalName)
